@@ -88,6 +88,7 @@ class DatabaseService {
           0.0,
           (sum, t) =>
               sum +
+              // ignore: unnecessary_type_check
               (t.amount is double ? t.amount : (t.amount as num).toDouble()),
         );
   }
@@ -101,6 +102,7 @@ class DatabaseService {
           0.0,
           (sum, t) =>
               sum +
+              // ignore: unnecessary_type_check
               (t.amount is double ? t.amount : (t.amount as num).toDouble()),
         );
   }

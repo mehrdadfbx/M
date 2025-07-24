@@ -381,6 +381,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen>
     if (confirmed == true && widget.transaction != null) {
       try {
         final financeProvider = Provider.of<FinanceProvider>(
+          // ignore: use_build_context_synchronously
           context,
           listen: false,
         );
