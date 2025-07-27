@@ -59,7 +59,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ? TextDirection.rtl
           : TextDirection.ltr,
       child: Scaffold(
+        resizeToAvoidBottomInset: true, // مقدار را به true تغییر دهید
         appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 25, 35, 41),
           title: Text(_getScreenTitle(l10n, _currentIndex)),
           centerTitle: true,
         ),
@@ -100,37 +102,39 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ),
           ],
         ),
-        floatingActionButton: ScaleTransition(
-          scale: _fabAnimation,
-          child: FloatingActionButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                PageRouteBuilder(
-                  pageBuilder: (context, animation, secondaryAnimation) =>
-                      const AddTransactionScreen(),
-                  transitionsBuilder:
-                      (context, animation, secondaryAnimation, child) {
-                        const begin = Offset(0.0, 1.0);
-                        const end = Offset.zero;
-                        const curve = Curves.easeInOut;
+        floatingActionButton: MediaQuery.of(context).viewInsets.bottom == 0
+            ? ScaleTransition(
+                scale: _fabAnimation,
+                child: FloatingActionButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            const AddTransactionScreen(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                              const begin = Offset(0.0, 1.0);
+                              const end = Offset.zero;
+                              const curve = Curves.easeInOut;
 
-                        var tween = Tween(
-                          begin: begin,
-                          end: end,
-                        ).chain(CurveTween(curve: curve));
-                        var offsetAnimation = animation.drive(tween);
+                              var tween = Tween(
+                                begin: begin,
+                                end: end,
+                              ).chain(CurveTween(curve: curve));
+                              var offsetAnimation = animation.drive(tween);
 
-                        return SlideTransition(
-                          position: offsetAnimation,
-                          child: child,
-                        );
-                      },
+                              return SlideTransition(
+                                position: offsetAnimation,
+                                child: child,
+                              );
+                            },
+                      ),
+                    );
+                  },
+                  child: const Icon(Icons.add),
                 ),
-              );
-            },
-            child: const Icon(Icons.add),
-          ),
-        ),
+              )
+            : null, // اگر کیبورد باز بود، FAB نمایش داده نشود
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
